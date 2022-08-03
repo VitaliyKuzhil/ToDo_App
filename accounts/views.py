@@ -1,10 +1,9 @@
-from django.contrib import messages
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
-from django.contrib.auth.tokens import default_token_generator as token_generator
+
 from .token import send_email
 
 from django.views import View
@@ -49,7 +48,7 @@ class LogoutFormView(View):
 
 class ActivateFormView(RedirectView):
 
-    def get(self, request, uidb64, token):
+    def get(self, request, uidb64, tocken):
         try:
             uid = force_str(urlsafe_base64_decode(uidb64))
             user = User.objects.get(pk=uid)
@@ -68,4 +67,11 @@ class CheckEmailView(TemplateView):
 
 
 class SuccessView(TemplateView):
-    template_name = 'activate_success.html'
+    template_name = 'activate_success'
+
+
+class InvalidView(TemplateView):
+    template_name = 'activate_invalid'
+
+
+
