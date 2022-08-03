@@ -1,0 +1,23 @@
+{% extends 'task/index_task.html' %}
+
+{% block title %}Список завдань{% endblock %}
+
+{% block content %}
+
+<div class="container">
+{% for task in list_todo %}
+    <ul class="list-group">
+        <a href="{% url 'task_detail' task.id %}" style="text-decoration:none;">
+            <li class="list-group-item">
+               <h5>{{task.title}}</h5>
+                <p>{{task.completed}}</p>
+                <p>{{task.priority}}</p>
+                <p>{{task.deadline_date}}</p>
+                <p>{{task.description|slice:250}}</p>
+            </li>
+        </a>
+        <br>
+    </ul>
+{% endfor %}
+</div>
+{% endblock %}

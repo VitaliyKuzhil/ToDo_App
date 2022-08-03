@@ -1,0 +1,81 @@
+version: "3.8"
+services:
+
+  # TASK
+  task:
+    build: .
+    volumes:
+      - .:/django
+    ports:
+      - "8000:8000"
+    restart: always
+    image: task:django
+    container_name: django_todo
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      - DEBUG=1
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    depends_on:
+      - database
+      - redis
+
+
+  #POSTGRES
+  database:
+    image: postgres:13.4
+    volumes:
+      - ./data/database:/var/lib/postgresql/data
+    restart: always
+    environment:
+      - POSTGRES_HOST=database
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=todo_db
+    container_name: postgres_todo
+
+
+  # PGADMIN
+  pgadmin:
+    image: dpage/pgadmin4:6.12
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 5050
+    ports:
+      - "5050:5050"
+    container_name: pgadmin4
+    volumes:
+      - ./data/pgadmin:/var/lib/pgadmin
+    restart: always
+    depends_on:
+      - database
+      - task
+      - redis
+
+
+  # REDIS
+  redis:
+    image: redis:alpine
+    container_name: redis
+
+
+  # CELERY
+  celery:
+    build:
+      context: .
+    image: celery:alpine
+    command: celery --app todo_project worker --loglevel INFO
+    restart: always
+    volumes:
+      - .:/django
+    environment:
+      - DEBUG=1
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    container_name: celery
+    depends_on:
+      - task
+      - redis

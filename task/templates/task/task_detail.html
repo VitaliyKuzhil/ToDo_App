@@ -1,0 +1,19 @@
+{% extends 'task/index_task.html' %}
+
+{% block title %}Завдання{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <ul class="list-group">
+        <li class="list-group-item">
+            <h5>{{task.title}}</h5>
+            <p>{{task.completed}}</p>
+            <p>{{task.priority}}</p>
+            <p>{{task.deadline_date}}</p>
+            <p>{{task.description}}</p>
+        </li>
+        <br>
+    </ul>
+</div>
+{% endblock %}

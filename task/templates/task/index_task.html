@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ua">
+<head>
+    <meta charset="UTF-8">
+
+    <title>{% block title %}{% endblock %}</title>
+
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container position-sticky">
+        <h1 class="display-4"><a href="{% url 'list_task' %}">Todo_app</a></h1>
+            <p class="lead">Список ваших справ</p>
+
+        <div class="position-absolute top-0 end-0 m-3">
+            {% if user.is_authenticated %}
+            <h3><a href="{% url 'user_profile' %}">{{ user.first_name }}{{ user.last_name }}</a></h3>
+            <a class="btn btn-primary m-1" href="{% url 'logout' %}">Вийти</a>
+            {% endif %}
+        </div>
+
+        <hr class="my-4">
+    </div>
+</div>
+
+{% block content %}{% endblock %}
+
+</body>
+<footer class="page-footer font-small blue">
+
+  <div class="footer-copyright text-center py-3">© 2022 Vitaliy Kuzhil
+    <p> Home Work for Python/Django Course S-PRO Academy</p>
+  </div>
+
+
+</footer>
+</html>
