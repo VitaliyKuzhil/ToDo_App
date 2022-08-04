@@ -11,17 +11,27 @@
 <body>
 <div class="jumbotron jumbotron-fluid">
     <div class="container position-sticky">
-        <h1 class="display-4"><a href="{% url 'list_task' %}">Todo_app</a></h1>
+        <h1 class="display-4"><a href="{% url 'task:list_task' %}">Todo_app</a></h1>
             <p class="lead">Список ваших справ</p>
 
         <div class="position-absolute top-0 end-0 m-3">
             {% if user.is_authenticated %}
-            <h3><a href="{% url 'user_profile' %}">{{ user.first_name }}{{ user.last_name }}</a></h3>
+            <h3><a href="{% url 'user_profile' %}">{{ user.first_name }} {{ user.last_name }}</a></h3>
             <a class="btn btn-primary m-1" href="{% url 'logout' %}">Вийти</a>
             {% endif %}
         </div>
 
         <hr class="my-4">
+
+        <div class="d-flex justify-content-xl-end">
+            <a class="btn btn-primary m-1" href="{% url 'task:list_task' %}">Список задач</a>
+            <a class="btn btn-primary m-1" href="{% url 'user_profile' %}">Профіль</a>
+            <a class="btn btn-primary m-1" href="#">Статистика задач</a>
+            <a class="btn btn-primary m-1" href="{% url 'task:add_task' %}">Додати задачу</a>
+        </div>
+
+        <hr class="my-4">
+
     </div>
 </div>
 
@@ -29,11 +39,12 @@
 
 </body>
 <footer class="page-footer font-small blue">
+    {% if user.is_authenticated %}
+    <span class="mb-3 mb-md-0 text-muted"><a href="{% url 'user_profile' %}">{{ user.first_name }} {{ user.last_name }}</a></span>
+    {% endif %}
 
   <div class="footer-copyright text-center py-3">© 2022 Vitaliy Kuzhil
-    <p> Home Work for Python/Django Course S-PRO Academy</p>
+    <a href="#"> Home Work for Python/Django Course S-PRO Academy</a>
   </div>
-
-
 </footer>
 </html>

@@ -7,11 +7,13 @@
 <div class="container">
     <ul class="list-group">
         <li class="list-group-item">
-            <h5>{{task.title}}</h5>
-            <p>{{task.completed}}</p>
-            <p>{{task.priority}}</p>
-            <p>{{task.deadline_date}}</p>
-            <p>{{task.description}}</p>
+            <h6>Завдання: </h6><p>{{task.title}}</p>
+            <h6>Статус виконання: </h6><p>{{task.completed}}</p>
+            <h6>Пріоритет: </h6><p>{{task.priority}}</p>
+            <h6>Дата дедлайну: </h6><p>{{task.deadline_date}}</p>
+            <h6>Важливість: </h6><p>{{task.importance}}</p>
+            <h6>Опис:</h6><p>{{task.description}}</p>
+            <a href="{% url 'task:update_task_detail' task.id %}" >Змінити дані</a>
         </li>
         <br>
     </ul>

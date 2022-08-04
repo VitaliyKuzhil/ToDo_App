@@ -1,0 +1,18 @@
+{% extends 'task/index_task.html' %}
+
+{% block title %}Список завдань{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form class="card mw-100" action="{% url 'task:add_task' %}" method="post">
+        <div class="d-flex justify-content-center">
+            <h3>Додати нове завдання</h3>
+        </div>
+        <div class="form-group m-5 mt-2 mb-2">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary btn-block"> Додати завдання</button>
+    </form>
+</div>
+{% endblock %}

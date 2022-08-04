@@ -1,0 +1,44 @@
+{% extends 'task/index_task.html' %}
+
+{% block title %}Статистика{% endblock %}
+
+{% block content %}
+    <h1 class="border-bottom p-3">Статистика</h1>
+    <div class="row justify-content-center p-2">
+        <div class="col-8">
+            <h4> Усі завдання {{user.first_name}}: {{all_task}} </h4>
+        </div>
+    </div>
+    <div class="row justify-content-center p-2">
+        <div class="col-8">
+            <h5> Статистика по статусам </h5>
+        </div>
+    </div>
+    <div class="row justify-content-between ">
+        <div class="col-4">
+            <6> Потрібно зробити: {{status_todo}} </h6>
+        </div>
+        <div class="col-4">
+            <6> В процесі: {{status_in_progress}} </h6>
+        </div>
+    </div>
+    <div class="row justify-content-between ">
+        <div class="col-4">
+            <h6> Заблоковано: {{status_blocked}} </h6>
+        </div>
+        <div class="col-4">
+            <h6> Виконано: {{status_finished}} </h6>
+        </div>
+    </div>
+    <div class="row justify-content-center p-2">
+        <div class="col-12">
+            <h6> Середня тривалість завдання::
+                {% if statistic %}
+                    Немає виконаних завдань
+                {% else %}
+                    {{average_duration_task}}
+                {% endif %}
+            </h6>
+        </div>
+    </div>
+{% endblock %}

@@ -7,13 +7,13 @@
 <div class="container">
 {% for task in list_todo %}
     <ul class="list-group">
-        <a href="{% url 'task_detail' task.id %}" style="text-decoration:none;">
+        <a href="{% url 'task:task_detail' task.id %}" style="text-decoration:none;">
             <li class="list-group-item">
-               <h5>{{task.title}}</h5>
-                <p>{{task.completed}}</p>
-                <p>{{task.priority}}</p>
-                <p>{{task.deadline_date}}</p>
-                <p>{{task.description|slice:250}}</p>
+               <h6>Завдання: </h6><h5>{{task.title}}</h5>
+                <h6>Статус виконання: </h6><p>{{task.completed}}</p>
+                <h6>Дата дедлайну: </h6><p>{{task.deadline_date}}</p>
+                <h6>Важливість: </h6><p>{{task.importance}}</p>
+                <h6>Опис:</h6><p>{{task.description|slice:250}}</p>
             </li>
         </a>
         <br>

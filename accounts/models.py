@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractUser
+from django.urls import reverse
 
 
 class CustomUserManager(BaseUserManager):
@@ -64,3 +65,6 @@ class CustomUser(AbstractUser):
         return f'Name: {self.first_name} {self.last_name}\n' \
                f'Position: {self.position}\n' \
                f'Email: {self.email}'
+
+    def get_absolute_url(self):
+        return reverse('user_profile')
