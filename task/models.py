@@ -8,7 +8,8 @@ User = get_user_model()
 
 
 class Task(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                             null=True, blank=True, related_name='task')
     title = models.CharField(max_length=200)
     description = models.TextField()
     deadline_date = models.DateField()
@@ -26,8 +27,7 @@ class Task(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"user: {self.user}, title: {self.title}, importance {self.importance}" \
-               f" priority: {self.priority}, completed: {self.completed}, deadline: {self.deadline_date}"
+        return f'user: {self.user}'
 
     def get_absolute_url(self):
         return reverse('task:task_detail', kwargs={'pk': self.pk})

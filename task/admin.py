@@ -3,9 +3,12 @@ from task.models import Task
 
 
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('title', 'description', 'user',)
+    def short_text(self, obj):
+        return obj.description[:50]
+
+    list_display = ('title', 'short_text', 'user',)
     search_fields = ('title',)
-    list_filter = ('user__first_name',)
+    list_filter = ('user__first_name', 'completed')
     fields = ('title', 'description', 'user', 'completed')
     readonly_fields = ('user',)
 

@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -10,7 +11,6 @@ from task.models import Task
 
 
 class TaskListView(View):
-    context_object_name = 'task'
     paginate_by = 5
 
     def get(self, request: HttpRequest):
@@ -39,7 +39,9 @@ class AddTaskView(FormView):
     template_name = "task/add_task.html"
 
     def form_valid(self, form):
-        form.save()
+        task = form.save(commit=False)
+        task.user = self.request.user
+        task.save()
         return super().form_valid(form)
 
 
