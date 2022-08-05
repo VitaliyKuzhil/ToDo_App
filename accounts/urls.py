@@ -1,7 +1,10 @@
 from django.urls import path
-
+from rest_framework import routers
 from accounts.views import RegisterFormView, LoginFormView, LogoutFormView, ActivateFormView, CheckEmailView, \
-    SuccessView, InvalidView, ProfileView, UpdateProfileView
+    SuccessView, InvalidView, ProfileView, UpdateProfileView, CustomUserApiView
+
+user_router = routers.SimpleRouter()
+user_router.register('', CustomUserApiView, basename='user_router')
 
 urlpatterns = [
     path('', RegisterFormView.as_view(), name='register'),

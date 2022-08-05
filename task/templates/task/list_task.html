@@ -4,8 +4,14 @@
 
 {% block content %}
 
+<div class="d-flex justify-content-center p-2">
+    <form class="col-lg-9 mb-4" role="search" action="" method="get">
+        <input type="search" name="search" class="form-control rounded form-control-dark text-primary bg-while" placeholder="Пошук">
+    </form>
+</div>
+
 <div class="container">
-{% for task in list_todo %}
+{% for task in page_obj %}
     <ul class="list-group">
         <a href="{% url 'task:task_detail' task.id %}" style="text-decoration:none;">
             <li class="list-group-item">
@@ -19,5 +25,22 @@
         <br>
     </ul>
 {% endfor %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 </div>
 {% endblock %}

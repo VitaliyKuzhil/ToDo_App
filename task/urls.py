@@ -1,6 +1,9 @@
 from django.urls import path
+from rest_framework import routers
+from task.views import TaskListView, TaskDetailView, UpdateTaskView, AddTaskView, StatisticTask, CustomTaskApiView
 
-from task.views import TaskListView, TaskDetailView, UpdateTaskView, AddTaskView, StatisticTask
+task_router = routers.SimpleRouter()
+task_router.register('', CustomTaskApiView, basename='task_router')
 
 app_name = "task"
 
