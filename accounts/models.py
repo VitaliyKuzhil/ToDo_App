@@ -62,7 +62,7 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = ['first_name', 'last_name', 'position']
 
     def __str__(self):
-        return f'Name: {self.first_name} {self.last_name}\n'
+        return f'{self.first_name} {self.last_name}'
 
     def get_absolute_url(self):
         return reverse('user_profile')

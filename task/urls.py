@@ -1,6 +1,7 @@
 from django.urls import path
 from rest_framework import routers
-from task.views import TaskListView, TaskDetailView, UpdateTaskView, AddTaskView, StatisticTask, CustomTaskApiView
+from task.views import TaskListView, TaskDetailView, UpdateTaskView, AddTaskView, StatisticTask, CustomTaskApiView, \
+    TaskDeleteView
 
 task_router = routers.SimpleRouter()
 task_router.register('', CustomTaskApiView, basename='task_router')
@@ -12,5 +13,6 @@ urlpatterns = [
     path('add_task/', AddTaskView.as_view(), name="add_task"),
     path('<int:pk>/', TaskDetailView.as_view(), name='task_detail'),
     path('update-task-detail/<int:pk>/', UpdateTaskView.as_view(), name='update_task_detail'),
+    path('task-confirm-delete/<int:pk>/', TaskDeleteView.as_view(), name='task_confirm_delete'),
     path('statistic/', StatisticTask.as_view(), name='statistic'),
 ]

@@ -1,0 +1,21 @@
+{% extends 'task/index_task.html' %}
+
+{% block title %}Статистика{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form class="card mw-100" method="post">
+        {% csrf_token %}
+        <div class="d-flex justify-content-center">
+            <h6>Ви хочете видалити?</h6>
+        </div>
+        <div class="form-group m-5 mt-2 mb-2">
+            <p>{{task.title}}</p>
+        </div>
+        <div class="d-flex justify-content-xl-end">
+            <input class="btn btn-primary m-1" type="submit" value="Видалити">
+            <a class="btn btn-primary m-1" role="button" href = "{% url 'task:task_detail' task.id %}">Скасувати видалення</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

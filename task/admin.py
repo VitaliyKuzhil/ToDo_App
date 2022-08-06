@@ -8,7 +8,7 @@ class TaskAdmin(admin.ModelAdmin):
 
     list_display = ('title', 'short_text', 'user',)
     search_fields = ('title',)
-    list_filter = ('user__first_name', 'completed')
+    list_filter = ('user', 'completed', 'priority')
     fields = ('title', 'description', 'user', 'completed')
     readonly_fields = ('user',)
 

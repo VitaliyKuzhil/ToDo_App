@@ -11,7 +11,12 @@
         </div>
         <div class="form-group m-5 mt-2 mb-2">
             {% csrf_token %}
-            {{ form.as_p }}
+            Ім'я: {{ form.first_name }}
+            <br>
+            Фамілія: {{ form.last_name }}
+            <br>
+            Позиція: {{ form.position }}
+            <br>
         </div>
         <button type="submit" class="btn btn-primary btn-block">Зберегти</button>
     </form>

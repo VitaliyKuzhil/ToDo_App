@@ -3,42 +3,71 @@
 {% block title %}Статистика{% endblock %}
 
 {% block content %}
-    <h1 class="border-bottom p-3">Статистика</h1>
-    <div class="row justify-content-center p-2">
-        <div class="col-8">
-            <h4> Усі завдання {{user.first_name}}: {{all_task}} </h4>
-        </div>
-    </div>
-    <div class="row justify-content-center p-2">
-        <div class="col-8">
-            <h5> Статистика по статусам </h5>
-        </div>
-    </div>
-    <div class="row justify-content-between ">
-        <div class="col-4">
-            <6> Потрібно зробити: {{status_todo}} </h6>
-        </div>
-        <div class="col-4">
-            <6> В процесі: {{status_in_progress}} </h6>
-        </div>
-    </div>
-    <div class="row justify-content-between ">
-        <div class="col-4">
-            <h6> Заблоковано: {{status_blocked}} </h6>
-        </div>
-        <div class="col-4">
-            <h6> Виконано: {{status_finished}} </h6>
-        </div>
-    </div>
-    <div class="row justify-content-center p-2">
-        <div class="col-12">
-            <h6> Середня тривалість завдання::
-                {% if statistic %}
-                    Немає виконаних завдань
-                {% else %}
-                    {{average_duration_task}}
-                {% endif %}
-            </h6>
-        </div>
-    </div>
+<div class="container">
+    <table class="table">
+        <h1 class="border-bottom">Статистика</h1>
+        <thead>
+            <tr>
+                <th scope="col">{{user.first_name}} {{user.last_name}}</th>
+                <th></th>
+                <th scope="col">Усі завдання:</th>
+                <th scope="col">{{all_task}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row"></th>
+                <td class="text-uppercase" colspan="2">Статистика виконання</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>Потрібно зробити:</td>
+                <td>{{completed_todo}}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>В процесі:</td>
+                <td>{{completed_in_progress}}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>Заблоковано:</td>
+                <td>{{completed_blocked}}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>Виконано:</td>
+                <td>{{completed_finished}}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td class="text-uppercase" colspan="2">Статистика пріоритету</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>Низький:</td>
+                <td>{{priority_low}}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>Серезній:</td>
+                <td>{{priority_medium}}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>Високий:</td>
+                <td>{{priority_high}}</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 {% endblock %}

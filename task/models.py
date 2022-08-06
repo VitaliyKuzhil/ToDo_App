@@ -18,9 +18,9 @@ class Task(models.Model):
                          ('blocked', 'Заблоковано'),
                          ('finished', 'Виконано')]
     completed = models.CharField(max_length=17, choices=COMPLETED_CHOICES, default='todo')
-    PRIORITY_CHOICES = [('high', 'Низький'),
+    PRIORITY_CHOICES = [('low', 'Низький'),
                         ('medium', 'Середній'),
-                        ('low', 'Високий')]
+                        ('high', 'Високий')]
     priority = models.CharField(max_length=8, choices=PRIORITY_CHOICES, default='medium')
     importance = models.BooleanField()
     created_date = models.DateTimeField(auto_now_add=True)

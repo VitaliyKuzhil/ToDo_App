@@ -5,17 +5,21 @@
 {% block content %}
 
 <div class="container">
-    <ul class="list-group">
-        <li class="list-group-item">
-            <h6>Завдання: </h6><p>{{task.title}}</p>
-            <h6>Статус виконання: </h6><p>{{task.completed}}</p>
-            <h6>Пріоритет: </h6><p>{{task.priority}}</p>
-            <h6>Дата дедлайну: </h6><p>{{task.deadline_date}}</p>
-            <h6>Важливість: </h6><p>{{task.importance}}</p>
-            <h6>Опис:</h6><p>{{task.description}}</p>
-            <a href="{% url 'task:update_task_detail' task.id %}" >Змінити дані</a>
-        </li>
-        <br>
-    </ul>
+    <div class="card">
+        <div class="card-body">
+            <div class="container">
+                <h6>Завдання: </h6><p>{{task.title}}</p>
+                <h6>Статус виконання: </h6><p>{{task.completed}}</p>
+                <h6>Пріоритет: </h6><p>{{task.priority}}</p>
+                <h6>Дата дедлайну: </h6><p>{{task.deadline_date}}</p>
+                <h6>Важливість: </h6><p>{{task.importance}}</p>
+                <h6>Опис:</h6><p>{{task.description}}</p>
+                <div class="d-flex justify-content-xl-end">
+                    <a class="btn btn-primary m-1" role="button" href="{% url 'task:update_task_detail' task.id %}" >Змінити дані</a>
+                    <a class="btn btn-primary m-1" role="button" href="{% url 'task:task_confirm_delete' task.id %}">Видалити</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

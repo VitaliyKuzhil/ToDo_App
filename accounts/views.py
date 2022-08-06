@@ -7,8 +7,9 @@ from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator as token_generator
 from .token import send_email
 
-from accounts.forms import CustomUserCreateForm, CustomLoginCreateForm
+from accounts.forms import CustomUserCreateForm, CustomLoginCreateForm, CustomUserChangeForm
 from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import FormView, TemplateView, UpdateView
 
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -94,9 +95,9 @@ class ProfileView(View):
         return render(request, 'accounts/user_profile.html', context=context)
 
 
-class UpdateProfileView(UpdateView):
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
     model = User
-    fields = ['first_name', 'last_name', 'position']
+    form_class = CustomUserChangeForm
     template_name = 'accounts/update_user_profile.html'
     template_name_suffix = '_update_user_profile'
 

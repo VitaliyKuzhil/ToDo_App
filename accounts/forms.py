@@ -41,6 +41,16 @@ class CustomUserCreateForm(UserCreationForm):
 
 
 class CustomUserChangeForm(UserChangeForm):
+    first_name = forms.CharField(required=True,
+                                 max_length=50,
+                                 widget=forms.TextInput(attrs={'class': 'form-control'}))
+    last_name = forms.CharField(required=True,
+                                max_length=50,
+                                widget=forms.TextInput(attrs={'class': 'form-control'}))
+    position = forms.CharField(required=True,
+                               max_length=100,
+                               widget=forms.TextInput(attrs={'class': 'form-control'}))
+
     class Meta:
         model = CustomUser
         fields = ('first_name', 'last_name', 'position')
