@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=200)),
                 ('description', models.TextField()),
                 ('deadline_date', models.DateField()),
-                ('completed', models.CharField(max_length=20)),
+                ('status', models.CharField(max_length=20)),
                 ('priority', models.CharField(max_length=20)),
                 ('importance', models.BooleanField()),
                 ('created_date', models.DateTimeField(auto_now_add=True)),

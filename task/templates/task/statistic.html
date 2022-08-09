@@ -23,25 +23,25 @@
             <tr>
                 <th scope="row"></th>
                 <td>Потрібно зробити:</td>
-                <td>{{completed_todo}}</td>
+                <td>{{status_todo}}</td>
                 <td></td>
             </tr>
             <tr>
                 <th scope="row"></th>
                 <td>В процесі:</td>
-                <td>{{completed_in_progress}}</td>
+                <td>{{status_in_progress}}</td>
                 <td></td>
             </tr>
             <tr>
                 <th scope="row"></th>
                 <td>Заблоковано:</td>
-                <td>{{completed_blocked}}</td>
+                <td>{{status_blocked}}</td>
                 <td></td>
             </tr>
             <tr>
                 <th scope="row"></th>
                 <td>Виконано:</td>
-                <td>{{completed_finished}}</td>
+                <td>{{status_finished}}</td>
                 <td></td>
             </tr>
             <tr>
@@ -69,5 +69,7 @@
             </tr>
         </tbody>
     </table>
+
+    <p>Середня тривалість виконання задачі: {{avg_resolution_time}}</p>
 </div>
 {% endblock %}

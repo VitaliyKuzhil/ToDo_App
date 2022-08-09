@@ -30,7 +30,7 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('first_name', 'last_name')
     inlines = [TaskInline]
 
-    fields = (('first_name', 'last_name'), 'email', 'task_count')
+    fields = (('first_name', 'last_name'), 'email', 'task_count', 'blocked')
     fieldsets = None
     add_fieldsets = (
         (

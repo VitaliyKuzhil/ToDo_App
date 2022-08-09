@@ -55,6 +55,7 @@ class CustomUser(AbstractUser):
     first_name = models.CharField(verbose_name='first_name', max_length=50)
     last_name = models.CharField(verbose_name='last_name', max_length=50)
     position = models.CharField(verbose_name='position', max_length=100)
+    blocked = models.BooleanField(verbose_name="blocked", default=0)
 
     objects = CustomUserManager()
 
