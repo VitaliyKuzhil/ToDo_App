@@ -21,7 +21,6 @@ services:
       - database
       - redis
 
-
   #POSTGRES
   database:
     image: postgres:13.4
@@ -60,12 +59,9 @@ services:
     image: redis:alpine
     container_name: redis
 
-
   # CELERY
   celery:
-    build:
-      context: .
-    image: celery:alpine
+    image: task:django
     command: celery --app todo_project worker --loglevel INFO
     restart: always
     volumes:
@@ -75,7 +71,24 @@ services:
       - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
       - CELERY_BROKER=redis://redis:6379/0
       - CELERY_BACKEND=redis://redis:6379/0
-    container_name: celery
     depends_on:
       - task
       - redis
+      - database
+
+  # CELERY
+  celery-beat:
+    image: task:django
+    command: celery --app todo_project beat --loglevel INFO
+    restart: always
+    volumes:
+      - .:/django
+    environment:
+      - DEBUG=1
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    depends_on:
+      - task
+      - redis
+      - database

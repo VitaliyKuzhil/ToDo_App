@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
+from django.http import HttpRequest
 from django.views import View
 from django.views.generic import FormView, TemplateView, UpdateView
 from rest_framework.authtoken.models import Token
@@ -14,10 +15,14 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from django.utils import timezone
+from datetime import datetime, timedelta
 
 from accounts.forms import CustomUserCreateForm, CustomLoginCreateForm, CustomUserChangeForm
 from .serializers import CustomUserSerializer
 from .tasks import send_email_celery
+
+from task.models import Task
 
 User = get_user_model()
 

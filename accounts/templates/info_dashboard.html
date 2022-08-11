@@ -1,0 +1,88 @@
+{% extends "admin/base_site.html" %}
+
+{% block content_title %}
+    <h1> Info Dashboard </h1>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <table class="table">
+        <h1 class="border-bottom">Статистика</h1>
+        <thead>
+            <tr>
+                <th scope="col">Всього користувачів:</th>
+                <th scope="col">{{user_count}}</th>
+                <th>з них нові за тиждень: </th>
+                <th>{{auth_user_last_week}}</th>
+                <th scope="col">Усі завдання:</th>
+                <th scope="col">{{all_task}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row"></th>
+                <td class="text-uppercase" colspan="2">Статистика виконання</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>Потрібно зробити:</td>
+                <td>{{status_todo}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>В процесі:</td>
+                <td>{{status_in_progress}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>Заблоковано:</td>
+                <td>{{status_blocked}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>Виконано:</td>
+                <td>{{status_finished}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td class="text-uppercase" colspan="2">Статистика пріоритету</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>Низький:</td>
+                <td>{{priority_low}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>Серезній:</td>
+                <td>{{priority_medium}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>Високий:</td>
+                <td>{{priority_high}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block pagination %}{% endblock %}
