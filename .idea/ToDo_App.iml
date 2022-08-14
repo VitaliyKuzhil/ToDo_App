@@ -3,6 +3,20 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/database/pg_logical/mappings" />
+      <excludeFolder url="file://$MODULE_DIR$/database/pg_logical/snapshots" />
+      <excludeFolder url="file://$MODULE_DIR$/database/pg_wal/archive_status" />
+      <excludeFolder url="file://$MODULE_DIR$/database/pg_commit_ts" />
+      <excludeFolder url="file://$MODULE_DIR$/database/pg_dynshmem" />
+      <excludeFolder url="file://$MODULE_DIR$/database/pg_notify" />
+      <excludeFolder url="file://$MODULE_DIR$/database/pg_replslot" />
+      <excludeFolder url="file://$MODULE_DIR$/database/pg_serial" />
+      <excludeFolder url="file://$MODULE_DIR$/database/pg_snapshots" />
+      <excludeFolder url="file://$MODULE_DIR$/database/pg_stat_tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/database/pg_tblspc" />
+      <excludeFolder url="file://$MODULE_DIR$/database/pg_twophase" />
+      <excludeFolder url="file://$MODULE_DIR$/pgadmin/azurecredentialcache" />
+      <excludeFolder url="file://$MODULE_DIR$/pgadmin/storage" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
