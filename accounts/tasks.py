@@ -1,14 +1,17 @@
+from todo_project.celery import app
+
 from datetime import date, timedelta
 from django.utils import timezone
-from django.contrib.auth import get_user_model
-from django.core.mail import EmailMultiAlternatives, send_mass_mail
-from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes
+
 from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator as token_generator
 
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives, send_mass_mail
 from todo_project import settings
-from todo_project.celery import app
+
+from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
@@ -44,7 +47,7 @@ def send_email_every_morning_celery():
         subject = 'Щоденні нагадування дедлайнів'
         message = f'Hey, {user.first_name}.'
         tasks = user.task.filter(deadline_date=date.today() + timedelta(days=1))
-        if tasks.count():
+        if tasks:
             message += ' Завтра дедлайн таких завдань:\n'
             for task in tasks:
                 message += f'\t{task.title}\n'
@@ -62,7 +65,7 @@ def send_email_every_week_celery():
         end_date = timezone.now()
         start_date = end_date - timedelta(days=7)
         tasks = user.task.filter(finished_at__range=[start_date, end_date])
-        if tasks.count():
+        if tasks:
             message += ' Виконані завдання цього тижня:\n'
             for task in tasks:
                 message += f'\t{task.title}\n'

@@ -1,5 +1,7 @@
 from django.db import models
+
 from django.contrib.auth.models import BaseUserManager, AbstractUser
+
 from django.urls import reverse
 
 
@@ -9,7 +11,7 @@ class CustomUserManager(BaseUserManager):
         Create and save a User with the given position, email and password.
         """
         if not email:
-            raise ValueError('The given email must be set')
+            raise ValueError("Email є обов'язковим полем для реєстрації")
         user = self.model(
             email=self.normalize_email(email),
             first_name=first_name,

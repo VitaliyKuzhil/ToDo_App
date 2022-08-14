@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Активація</title>
+    <title>Активація облікового запису</title>
 </head>
 <body>
-Hello {{ user.first_name }} {{ user.last_name }}
+Привіт {{ user.first_name }} {{ user.last_name }}.
 <a href="http://{{ domain }}{% url 'activate' uidb64=uid token=token %}">
-    Please confirm your email address and activate your account
+    Будь-ласка активуйте свій обліковий запис
 </a>
 
 </body>

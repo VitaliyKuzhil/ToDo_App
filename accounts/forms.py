@@ -1,11 +1,12 @@
 from django import forms
+
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django.contrib.auth.models import User
-from django.contrib.sites.shortcuts import get_current_site
-from django.core.exceptions import ValidationError
-
 from .models import CustomUser
+
+from django.core.exceptions import ValidationError
+from django.contrib.sites.shortcuts import get_current_site
 from .tasks import send_email_celery
 
 
@@ -20,7 +21,7 @@ class CustomUserCreateForm(UserCreationForm):
                                  widget=forms.TextInput(attrs={'class': 'form-control'}))
     last_name = forms.CharField(required=True,
                                 max_length=50,
-                                label="Фамілія",
+                                label="Прізвище",
                                 widget=forms.TextInput(attrs={'class': 'form-control'}))
     position = forms.CharField(required=True,
                                max_length=100,
@@ -85,7 +86,7 @@ class CustomLoginCreateForm(AuthenticationForm):
                     site_domain=get_current_site(self.request).domain
                 )
                 raise ValidationError(
-                    'Перейдіть на електронну пошту та активуйте акаунт',
+                    'Перейдіть на електронну пошту та активуйте свій обліковий запис',
                     code='invalid',
                 )
 

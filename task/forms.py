@@ -1,9 +1,7 @@
 import datetime
 from django import forms
-from django.utils.translation import gettext_lazy as _
-
-from task.constants import TaskStatusChoices, TaskPriorityChoices
 from task.models import Task
+from task.constants import TaskStatusChoices, TaskPriorityChoices
 
 
 class AddTaskFormView(forms.ModelForm):

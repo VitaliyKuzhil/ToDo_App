@@ -1,10 +1,9 @@
+from django.utils import timezone
 from django.conf import settings
 from django.db import models
-from django.contrib.auth import get_user_model
-from django.shortcuts import redirect
-from django.urls import reverse, reverse_lazy
-from django.utils import timezone
+from django.urls import reverse
 
+from django.contrib.auth import get_user_model
 from .constants import TaskStatusChoices, TaskPriorityChoices
 
 User = get_user_model()
@@ -19,8 +18,8 @@ class Task(models.Model):
 
     status = models.CharField(max_length=16, choices=TaskStatusChoices.choices, default=TaskStatusChoices.TODO)
     priority = models.CharField(max_length=8, choices=TaskPriorityChoices.choices, default=TaskPriorityChoices.MEDIUM)
-
     importance = models.BooleanField(default=False)
+
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -28,7 +27,7 @@ class Task(models.Model):
     finished_at = models.DateTimeField(null=True, default=None)
 
     def __str__(self):
-        return f'user: {self.user}'
+        return f'id:{self.pk}'
 
     def get_absolute_url(self):
         return reverse('task:task_detail', kwargs={'pk': self.pk})

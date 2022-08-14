@@ -1,24 +1,28 @@
-from django.contrib.auth import get_user_model
+from django.views.generic import UpdateView, DeleteView, CreateView
+from django.views import View
+
+from task.forms import AddTaskFormView, UpdateTaskFormView
+from task.constants import TaskPriorityChoices, TaskStatusChoices
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.paginator import Paginator
-from django.db.models import Avg, F
+
+from task.models import Task
 from django.http import HttpRequest
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views import View
-from django.views.generic import UpdateView, FormView, DeleteView, CreateView
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, request
-from rest_framework.decorators import action
+
+from django.contrib.auth import get_user_model
+
+from django.core.paginator import Paginator
+from django.db.models import Avg, F
+
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
 from rest_framework.viewsets import ModelViewSet
-
-from task.constants import TaskPriorityChoices, TaskStatusChoices
-from task.forms import AddTaskFormView, UpdateTaskFormView
-from task.models import Task
 from task.serializers import TaskSerializer
+
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+from rest_framework.decorators import action
 
 User = get_user_model()
 
@@ -26,7 +30,7 @@ User = get_user_model()
 class TaskListView(View):
 
     def get(self, request: HttpRequest):
-        list_todo = Task.objects.all().filter(user=self.request.user).order_by('-id')
+        list_todo = Task.objects.filter(user=self.request.user).order_by('-id')
         paginator = Paginator(list_todo, 5)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -46,22 +50,6 @@ class TaskDetailView(View):
         return render(request, 'task/task_detail.html', context)
 
 
-class UpdateTaskView(LoginRequiredMixin, UpdateView):
-    model = Task
-    form_class = UpdateTaskFormView
-    template_name = 'task/update_task_detail.html'
-    template_name_suffix = '_update_task_detail'
-
-    def form_valid(self, form):
-        task = form.save(commit=False)
-        if task.status == TaskStatusChoices.IN_PROGRESS:
-            task.set_status_as_in_progress()
-        elif task.status == TaskStatusChoices.FINISHED:
-            task.set_status_as_finished()
-        task.save()
-        return super(UpdateTaskView, self).form_valid(form)
-
-
 class AddTaskView(LoginRequiredMixin, CreateView):
     form_class = AddTaskFormView
     success_url = reverse_lazy("task:list_task")
@@ -74,26 +62,50 @@ class AddTaskView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+class UpdateTaskView(LoginRequiredMixin, UpdateView):
+    model = Task
+    form_class = UpdateTaskFormView
+    template_name = 'task/update_task_detail.html'
+    template_name_suffix = '_update_task_detail'
+
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(
+            user=self.request.user)
+
+    def form_valid(self, form):
+        task = form.save(commit=False)
+        if task.status == TaskStatusChoices.IN_PROGRESS:
+            task.set_status_as_in_progress()
+        elif task.status == TaskStatusChoices.FINISHED:
+            task.set_status_as_finished()
+        task.save()
+        return super(UpdateTaskView, self).form_valid(form)
+
+
 class TaskDeleteView(LoginRequiredMixin, DeleteView):
     model = Task
     context_object_name = 'task'
     success_url = reverse_lazy('task:list_task')
 
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(
+            user=self.request.user)
+
 
 class StatisticTask(View):
     def get(self, request: HttpRequest):
         tasks = Task.objects.filter(user=self.request.user)
-
         context = {
             'all_task': tasks.count(),
-            'status_todo': tasks.filter(status='todo').count(),
-            'status_in_progress': tasks.filter(status='in_progress').count(),
-            'status_blocked': tasks.filter(status='blocked').count(),
-            'status_finished': tasks.filter(status='finished').count(),
-            'priority_high': tasks.filter(priority='high').count(),
-            'priority_medium': tasks.filter(priority='medium').count(),
-            'priority_low': tasks.filter(priority='low').count(),
-            **tasks.filter(status='finished').aggregate(avg_resolution_time=Avg(F('finished_at') - F('started_at')))
+            'status_todo': tasks.filter(status=TaskStatusChoices.TODO).count(),
+            'status_in_progress': tasks.filter(status=TaskStatusChoices.IN_PROGRESS).count(),
+            'status_blocked': tasks.filter(status=TaskStatusChoices.BLOCKED).count(),
+            'status_finished': tasks.filter(status=TaskStatusChoices.FINISHED).count(),
+            'priority_high': tasks.filter(priority=TaskPriorityChoices.HIGH).count(),
+            'priority_medium': tasks.filter(priority=TaskPriorityChoices.MEDIUM).count(),
+            'priority_low': tasks.filter(priority=TaskPriorityChoices.LOW).count(),
+            **tasks.filter(status=TaskStatusChoices.FINISHED).aggregate(
+                avg_resolution_time=Avg(F('finished_at') - F('started_at')))
         }
         return render(request, 'task/statistic.html', context=context)
 
@@ -108,9 +120,7 @@ class CustomTaskApiView(ModelViewSet):
     search_fields = ['title']
 
     def get_queryset(self):
-        queryset = self.queryset
-        query_set = queryset.filter(user=self.request.user)
-        return query_set
+        return self.queryset.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(**{'user': self.request.user})
@@ -178,4 +188,3 @@ class CustomTaskApiView(ModelViewSet):
         task.save()
         serializer = self.get_serializer(task)
         return Response(serializer.data)
-

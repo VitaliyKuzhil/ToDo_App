@@ -1,15 +1,20 @@
 from datetime import datetime, timedelta
+from django.utils import timezone
 
 from django.contrib import admin
-from django.contrib.auth import get_user_model
+
 from django.template.response import TemplateResponse
 from django.urls import path
-from django.utils import timezone
 
 from accounts.models import CustomUser
 from task.models import Task
+from task.constants import TaskStatusChoices, TaskPriorityChoices
+
+from django.contrib.auth import get_user_model
+from rest_framework.authtoken.admin import TokenAdmin
 
 User = get_user_model()
+TokenAdmin.raw_id_fields = ['user']
 
 
 class TaskInline(admin.TabularInline):
@@ -40,17 +45,17 @@ class UserAdmin(admin.ModelAdmin):
         user = User.objects.all()
 
         context = {
-            **self.admin_site.each_context(request),  # Include common variables for rendering the admin template.
+            **self.admin_site.each_context(request),
             'user_count': user.count(),
             'auth_user_last_week': user.filter(date_joined__gt=datetime.now(timezone.utc) - timedelta(days=7)).count(),
             'all_task': tasks.count(),
-            'status_todo': tasks.filter(status='todo').count(),
-            'status_in_progress': tasks.filter(status='in_progress').count(),
-            'status_blocked': tasks.filter(status='blocked').count(),
-            'status_finished': tasks.filter(status='finished').count(),
-            'priority_high': tasks.filter(priority='high').count(),
-            'priority_medium': tasks.filter(priority='medium').count(),
-            'priority_low': tasks.filter(priority='low').count(),
+            'status_todo': tasks.filter(status=TaskStatusChoices.TODO).count(),
+            'status_in_progress': tasks.filter(status=TaskStatusChoices.IN_PROGRESS).count(),
+            'status_blocked': tasks.filter(status=TaskStatusChoices.BLOCKED).count(),
+            'status_finished': tasks.filter(status=TaskStatusChoices.FINISHED).count(),
+            'priority_high': tasks.filter(priority=TaskPriorityChoices.HIGH).count(),
+            'priority_medium': tasks.filter(priority=TaskPriorityChoices.MEDIUM).count(),
+            'priority_low': tasks.filter(priority=TaskPriorityChoices.LOW).count(),
         }
         return TemplateResponse(request, "info_dashboard.html", context)
 
@@ -59,7 +64,7 @@ class UserAdmin(admin.ModelAdmin):
 
     task_count.short_description = 'Tasks count'
 
-    list_display = ('first_name', 'last_name', 'position', 'email', 'task_count')
+    list_display = ('id', 'first_name', 'last_name', 'position', 'email', 'task_count')
     list_display_links = ('first_name', 'last_name', 'email')
     search_fields = ('first_name', 'last_name')
     inlines = [TaskInline]

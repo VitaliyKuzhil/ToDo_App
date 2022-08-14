@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
-from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,11 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
-    'task',
     'django_filters',
+
     'rest_framework',
     'rest_framework.authtoken',
+
+    'accounts',
+    'task',
 ]
 
 MIDDLEWARE = [
@@ -77,11 +78,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'todo_project.wsgi.application'
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 5
@@ -163,14 +163,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379")
-
-CELERY_BEAT_SCHEDULE = {
-    'send_email_every_morning_celery': {
-        'task': 'accounts.tasks.send_email_every_morning_celery',
-        'schedule': crontab(hour='12-20', minute=0),
-    },
-    'send_email_every_week_celery': {
-        'task': 'accounts.tasks.send_email_every_week_celery',
-        'schedule': crontab(day_of_week=0, hour=9, minute=0),
-    },
-}

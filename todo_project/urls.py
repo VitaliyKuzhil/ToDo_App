@@ -15,16 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
 from accounts.views import CustomAuthToken
 from accounts.urls import user_router
 from task.urls import task_router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('', include('accounts.urls')),
     path('task/', include('task.urls', namespace="task"), name='task'),
-    path('api-auth/', include('rest_framework.urls')),
-    path('api-token/', CustomAuthToken.as_view(), name='token_generator'),
-    path('user-api/', include(user_router.urls), name='user_router'),
-    path('task-api/', include(task_router.urls), name='task_router'),
+
+    path('api-auth/', include('rest_framework.urls'), name='api_auth'),
+    path('api/token-auth/', CustomAuthToken.as_view(), name='token_generator'),
+    path('api/user/', include(user_router.urls), name='user_router'),
+    path('api/task/', include(task_router.urls), name='task_router'),
 ]

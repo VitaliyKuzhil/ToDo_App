@@ -6,7 +6,8 @@ class TaskAdmin(admin.ModelAdmin):
     def short_text(self, obj):
         return obj.description[:50]
 
-    list_display = ('title', 'short_text', 'user',)
+    list_display = ('id', 'title', 'short_text', 'user',)
+    list_display_links = ('title',)
     search_fields = ('title',)
     list_filter = ('user', 'status', 'priority')
     fields = ('title', 'description', 'user', 'status', 'priority', 'importance',

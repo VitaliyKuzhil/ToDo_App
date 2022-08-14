@@ -10,9 +10,11 @@ app_name = "task"
 
 urlpatterns = [
     path('', TaskListView.as_view(), name='list_task'),
+
     path('add_task/', AddTaskView.as_view(), name="add_task"),
     path('<int:pk>/', TaskDetailView.as_view(), name='task_detail'),
     path('update-task-detail/<int:pk>/', UpdateTaskView.as_view(), name='update_task_detail'),
     path('task-confirm-delete/<int:pk>/', TaskDeleteView.as_view(), name='task_confirm_delete'),
+
     path('statistic/', StatisticTask.as_view(), name='statistic'),
 ]

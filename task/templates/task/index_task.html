@@ -12,13 +12,12 @@
 <div class="jumbotron jumbotron-fluid">
     <div class="container position-sticky">
         <h1 class="display-4"><a href="{% url 'task:list_task' %}">Todo_app</a></h1>
-            <p class="lead">Список ваших справ</p>
+        <p class="lead">Список ваших задач</p>
 
+        {% if user.is_authenticated %}
         <div class="position-absolute top-0 end-0 m-3">
-            {% if user.is_authenticated %}
             <h3><a href="{% url 'user_profile' %}">{{ user.first_name }} {{ user.last_name }}</a></h3>
             <a class="btn btn-primary m-1" href="{% url 'logout' %}">Вийти</a>
-            {% endif %}
         </div>
 
         <hr class="my-4">
@@ -31,7 +30,7 @@
         </div>
 
         <hr class="my-4">
-
+        {% endif %}
     </div>
 </div>
 
@@ -39,12 +38,32 @@
 
 </body>
 <footer class="page-footer font-small blue">
-    {% if user.is_authenticated %}
-    <span class="mb-3 mb-md-0 text-muted"><a href="{% url 'user_profile' %}">{{ user.first_name }} {{ user.last_name }}</a></span>
-    {% endif %}
-
-  <div class="footer-copyright text-center py-3">© 2022 Vitaliy Kuzhil
-    <a href="#"> Home Work for Python/Django Course S-PRO Academy</a>
-  </div>
+    <div class="container position-sticky">
+        <hr class="my-4">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-sm">
+                    {% if user.is_authenticated %}
+                    <p class="display-8">Проект: <a href="{% url 'task:list_task' %}">Todo_app</a></p>
+                    <p class="display-8">Користувач: <a href="{% url 'user_profile' %}">{{ user.first_name }} {{ user.last_name }}</a></p>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <p>GitHub: <a href="#">ToDo_App</a></p>
+                    <p>LinkedIn: <a href="https://www.linkedin.com/in/vitaliy-kuzhil-0a9722163/">Profile</a></p>
+                </div>
+                <div class="col-sm">
+                    <p>Resume: <a href="https://drive.google.com/file/d/1o2badADWMwdV5ceEKmPy4D2tFGX7_9Uz/view">
+                        PythonCV</a></p>
+                    <p>Dou: <a href="https://dou.ua/users/vitaliy-kuzhil-1/">Profile</a> </p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+        (Python/Django/DRF/PostgreSQL/pgAdmin/Docker/Docker-Compose/Redis/Celery/Celery-Beat/Git)
+            <br>
+        © 2022 Vitaliy Kuzhil
+        </div>
+    </div>
 </footer>
 </html>

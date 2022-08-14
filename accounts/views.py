@@ -1,28 +1,27 @@
-from django.contrib.auth import get_user_model
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.tokens import default_token_generator as token_generator
-from django.contrib.sites.shortcuts import get_current_site
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy, reverse
-from django.utils.encoding import force_str
-from django.utils.http import urlsafe_base64_decode
-from django.http import HttpRequest
-from django.views import View
 from django.views.generic import FormView, TemplateView, UpdateView
-from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
-from django.utils import timezone
-from datetime import datetime, timedelta
+from django.views import View
 
 from accounts.forms import CustomUserCreateForm, CustomLoginCreateForm, CustomUserChangeForm
-from .serializers import CustomUserSerializer
+from django.contrib.auth import login, authenticate, logout
+
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy, reverse
+
+from django.contrib.auth import get_user_model
+
+from django.contrib.auth.tokens import default_token_generator as token_generator
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_str
 from .tasks import send_email_celery
 
-from task.models import Task
+from rest_framework.viewsets import ModelViewSet
+from .serializers import CustomUserSerializer
+from django.contrib.auth.mixins import LoginRequiredMixin
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 User = get_user_model()
 
@@ -46,28 +45,6 @@ class RegisterFormView(FormView):
             site_domain=get_current_site(self.request).domain
         )
         return super(RegisterFormView, self).form_valid(form)
-
-
-class LoginFormView(FormView):
-    form_class = CustomLoginCreateForm
-    success_url = reverse_lazy('task:list_task')
-    template_name = 'accounts/login.html'
-
-    def form_valid(self, form):
-        user = authenticate(username=self.request.POST['username'],
-                            password=self.request.POST['password'])
-        login(self.request, user)
-        return super(LoginFormView, self).form_valid(form)
-
-    def get_form_kwargs(self):
-        return {**super(LoginFormView, self).get_form_kwargs(),
-                "request": self.request}
-
-
-class LogoutFormView(View):
-    def get(self, request):
-        logout(request)
-        return redirect(reverse('login'))
 
 
 class ActivateFormView(View):
@@ -98,6 +75,28 @@ class InvalidView(TemplateView):
     template_name = 'accounts/activate_invalid.html'
 
 
+class LoginFormView(FormView):
+    form_class = CustomLoginCreateForm
+    success_url = reverse_lazy('task:list_task')
+    template_name = 'accounts/login.html'
+
+    def form_valid(self, form):
+        user = authenticate(username=self.request.POST['username'],
+                            password=self.request.POST['password'])
+        login(self.request, user)
+        return super(LoginFormView, self).form_valid(form)
+
+    def get_form_kwargs(self):
+        return {**super(LoginFormView, self).get_form_kwargs(),
+                "request": self.request}
+
+
+class LogoutFormView(View):
+    def get(self, request):
+        logout(request)
+        return redirect(reverse('login'))
+
+
 class ProfileView(View):
 
     def get(self, request):
@@ -111,6 +110,10 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
     form_class = CustomUserChangeForm
     template_name = 'accounts/update_user_profile.html'
     template_name_suffix = '_update_user_profile'
+
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(
+            pk=self.request.user.pk)
 
 
 class CustomAuthToken(ObtainAuthToken):
@@ -129,14 +132,14 @@ class CustomAuthToken(ObtainAuthToken):
 
 
 class CustomUserApiView(ModelViewSet):
+    queryset = User.objects.all()
     serializer_class = CustomUserSerializer
     permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'put', 'patch']
 
+    def get_queryset(self):
+        return self.queryset.filter(pk=self.request.user.pk)
+
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:
             serializer.save(**{'email': self.request.user.email})
-
-    def get_queryset(self):
-        email = self.request.user.email
-        return User.objects.filter(email=email)

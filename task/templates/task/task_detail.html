@@ -15,7 +15,7 @@
                 <h6>Важливість: </h6><p>{{task.importance}}</p>
                 <h6>Опис:</h6><p>{{task.description}}</p>
                 <div class="d-flex justify-content-xl-end">
-                    <a class="btn btn-primary m-1" role="button" href="{% url 'task:update_task_detail' task.id %}" >Змінити дані</a>
+                    <a class="btn btn-primary m-1" role="button" href="{% url 'task:update_task_detail' task.id %}" >Оновити інформацію</a>
                     <a class="btn btn-primary m-1" role="button" href="{% url 'task:task_confirm_delete' task.id %}">Видалити</a>
                 </div>
             </div>
