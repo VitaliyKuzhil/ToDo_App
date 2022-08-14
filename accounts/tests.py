@@ -47,7 +47,7 @@ class loginTestCase(APITestCase):
         self.assertEqual(resp['message'], "Login Invalid")
 
     def test_get_user_data_auth(self):
-        profile_url = reverse('user_router', kwargs={'pk': self.user1.id})
+        profile_url = reverse('user_router:user_profile', kwargs={'pk': self.user1})
         response = self.client.get(profile_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['first_name', 'last_name'], self.user1.first_name, self.user1.last_name)
